@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<!-- RESPONSIVE -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>English Trainer</title>
+
+<style>
+
+/* RESET */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI, Roboto, sans-serif;
+}
+
+/* BACKGROUND */
+
+body{
+
+min-height:100vh;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+background:linear-gradient(135deg,#0f172a,#020617);
+
+color:white;
+
+padding:20px;
+
+}
+
+/* MAIN CARD */
+
+.container{
+
+width:100%;
+max-width:420px;
+
+padding:40px;
+
+border-radius:18px;
+
+background:rgba(255,255,255,0.05);
+
+backdrop-filter:blur(15px);
+
+border:1px solid rgba(255,255,255,0.08);
+
+box-shadow:0 20px 60px rgba(0,0,0,0.6);
+
+text-align:center;
+
+}
+
+/* TITLE */
+
+h1{
+
+font-weight:600;
+
+letter-spacing:1px;
+
+margin-bottom:25px;
+
+color:#e2e8f0;
+
+}
+
+/* WORD */
+
+#word{
+
+font-size:42px;
+
+font-weight:700;
+
+margin:25px 0;
+
+color:#f8fafc;
+
+}
+
+/* TEXT RESULTS */
+
+#translation{
+
+margin-top:12px;
+
+font-size:20px;
+
+color:#22c55e;
+
+}
+
+#past{
+
+margin-top:10px;
+
+font-size:20px;
+
+color:#38bdf8;
+
+}
+
+/* BUTTONS */
+
+.buttons{
+
+margin-top:30px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:12px;
+
+}
+
+/* BUTTON STYLE */
+
+button{
+
+padding:14px;
+
+border:none;
+
+border-radius:10px;
+
+font-size:16px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:0.25s;
+
+background:#1e293b;
+
+color:#e2e8f0;
+
+border:1px solid rgba(255,255,255,0.08);
+
+}
+
+/* HOVER EFFECT */
+
+button:hover{
+
+background:#334155;
+
+transform:translateY(-2px);
+
+box-shadow:0 5px 20px rgba(0,0,0,0.4);
+
+}
+
+/* SPECIAL BUTTON COLORS */
+
+.random:hover{
+
+box-shadow:0 0 15px #8b5cf6;
+
+}
+
+.translation:hover{
+
+box-shadow:0 0 15px #22c55e;
+
+}
+
+.past:hover{
+
+box-shadow:0 0 15px #38bdf8;
+
+}
+
+/* 📱 MOBILE ADJUSTMENTS */
+
+@media (max-width:480px){
+
+.container{
+padding:28px;
+}
+
+#word{
+font-size:34px;
+}
+
+button{
+font-size:15px;
+padding:13px;
+}
+
+#translation,
+#past{
+font-size:18px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>English Trainer</h1>
+
+<div id="word">Click Random Word</div>
+
+<div class="buttons">
+
+<button class="random" onclick="randomWord()">🎲 Random Word</button>
+
+<button class="translation" onclick="showTranslation()">📖 Show Translation</button>
+
+<button class="past" onclick="showPast()">⏳ Show Past</button>
+
+</div>
+
+<div id="translation"></div>
+
+<div id="past"></div>
+
+</div>
+
+<script>
+
+const words = [
+
+{en:"Be", pt:"ser / estar", past:"was / were"},
+
+{en:"Have", pt:"ter", past:"had"},
+
+{en:"Do", pt:"fazer", past:"did"},
+
+{en:"Say", pt:"dizer", past:"said"},
+
+{en:"Go", pt:"ir", past:"went"},
+
+{en:"Get", pt:"pegar / conseguir", past:"got"},
+
+{en:"Make", pt:"fazer / criar", past:"made"},
+
+{en:"Know", pt:"saber / conhecer", past:"knew"},
+
+{en:"Think", pt:"pensar", past:"thought"},
+
+{en:"Take", pt:"pegar / levar", past:"took"},
+
+{en:"See", pt:"ver", past:"saw"}
+
+];
+
+let currentWord=null;
+
+function randomWord(){
+
+let index=Math.floor(Math.random()*words.length);
+
+currentWord=words[index];
+
+document.getElementById("word").innerText=currentWord.en;
+
+document.getElementById("translation").innerText="";
+
+document.getElementById("past").innerText="";
+
+}
+
+function showTranslation(){
+
+if(currentWord){
+
+document.getElementById("translation").innerText="Translation: "+currentWord.pt;
+
+}
+
+}
+
+function showPast(){
+
+if(currentWord){
+
+document.getElementById("past").innerText="Past: "+currentWord.past;
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
