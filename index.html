@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>English Trainer</title>
 
 <style>
@@ -38,72 +37,95 @@ text-align:center;
 }
 
 h1{
-margin-bottom:20px;
+font-weight:600;
+letter-spacing:1px;
+margin-bottom:25px;
 color:#e2e8f0;
 }
 
-.word{
-font-size:38px;
-margin:25px 0;
+#word{
+font-size:42px;
 font-weight:700;
+margin:25px 0;
+color:#f8fafc;
 }
 
-input{
-width:100%;
-padding:12px;
+#translation{
+margin-top:12px;
+font-size:20px;
+color:#22c55e;
+}
+
+#past{
 margin-top:10px;
-border-radius:8px;
-border:none;
-outline:none;
-background:#020617;
-color:white;
-border:1px solid rgba(255,255,255,0.1);
-text-align:center;
+font-size:20px;
+color:#38bdf8;
 }
 
 .buttons{
 margin-top:20px;
 display:flex;
 flex-direction:column;
-gap:10px;
+gap:12px;
 }
 
 button{
-padding:13px;
-border-radius:10px;
+padding:14px;
 border:none;
-cursor:pointer;
-background:#1e293b;
-color:white;
+border-radius:10px;
+font-size:16px;
 font-weight:600;
-transition:.25s;
+cursor:pointer;
+transition:0.25s;
+background:#1e293b;
+color:#e2e8f0;
+border:1px solid rgba(255,255,255,0.08);
 }
 
 button:hover{
 background:#334155;
 transform:translateY(-2px);
+box-shadow:0 5px 20px rgba(0,0,0,0.4);
 }
 
-.result{
+.random:hover{box-shadow:0 0 15px #8b5cf6;}
+.translation:hover{box-shadow:0 0 15px #22c55e;}
+.past:hover{box-shadow:0 0 15px #38bdf8;}
+.check:hover{box-shadow:0 0 15px #f59e0b;}
+
+/* INPUT */
+
+input{
+margin-top:20px;
+width:100%;
+padding:12px;
+border-radius:8px;
+border:none;
+outline:none;
+font-size:16px;
+text-align:center;
+background:#020617;
+color:white;
+border:1px solid rgba(255,255,255,0.1);
+}
+
+#result{
 margin-top:15px;
 font-size:18px;
 font-weight:600;
-}
-
-.hidden{
-display:none;
 }
 
 /* MOBILE */
 
 @media (max-width:480px){
 
-.container{
-padding:28px;
-}
+.container{padding:28px;}
 
-.word{
-font-size:32px;
+#word{font-size:34px;}
+
+button{
+font-size:15px;
+padding:13px;
 }
 
 }
@@ -115,175 +137,98 @@ font-size:32px;
 
 <div class="container">
 
-<!-- PAGE 1 -->
+<h1>English Trainer</h1>
 
-<div id="page1">
+<div id="word">Click Random Word</div>
 
-<h1>English → Past</h1>
-
-<div id="word1" class="word">Click Random Word</div>
-
-<input id="answer1" placeholder="Type the past tense">
+<input id="answer" placeholder="Type the past tense...">
 
 <div class="buttons">
 
-<button onclick="randomWord()">🎲 Random Word</button>
-<button onclick="checkPast()">✅ Check</button>
-<button onclick="showPast()">⏳ Show Past</button>
-<button onclick="showTranslation()">📖 Show Translation</button>
-<button onclick="goPage2()">➡ Portuguese Mode</button>
+<button class="random" onclick="randomWord()">🎲 Random Word</button>
+
+<button class="check" onclick="checkAnswer()">✅ Check Answer</button>
+
+<button class="translation" onclick="showTranslation()">📖 Show Translation</button>
+
+<button class="past" onclick="showPast()">⏳ Show Past</button>
 
 </div>
 
-<div id="result1" class="result"></div>
-<div id="translation1" class="result"></div>
+<div id="translation"></div>
+<div id="past"></div>
+<div id="result"></div>
 
 </div>
-
-
-<!-- PAGE 2 -->
-
-<div id="page2" class="hidden">
-
-<h1>Portuguese → English</h1>
-
-<div id="word2" class="word">Click Random Word</div>
-
-<input id="presentAnswer" placeholder="Present (English)">
-<input id="pastAnswer" placeholder="Past (English)">
-
-<div class="buttons">
-
-<button onclick="randomWordPT()">🎲 Random Word</button>
-<button onclick="checkBoth()">✅ Check</button>
-<button onclick="showAnswers()">📖 Show Answers</button>
-<button onclick="goPage1()">⬅ Back</button>
-
-</div>
-
-<div id="result2" class="result"></div>
-
-</div>
-
-</div>
-
 
 <script>
 
 const words = [
 
-{en:"be", pt:"ser / estar", past:"was / were"},
-{en:"have", pt:"ter", past:"had"},
-{en:"do", pt:"fazer", past:"did"},
-{en:"say", pt:"dizer", past:"said"},
-{en:"go", pt:"ir", past:"went"},
-{en:"get", pt:"pegar / conseguir", past:"got"},
-{en:"make", pt:"fazer / criar", past:"made"},
-{en:"know", pt:"saber / conhecer", past:"knew"},
-{en:"think", pt:"pensar", past:"thought"},
-{en:"take", pt:"pegar / levar", past:"took"},
-{en:"see", pt:"ver", past:"saw"}
+{en:"Be", pt:"ser / estar", past:"was / were"},
+{en:"Have", pt:"ter", past:"had"},
+{en:"Do", pt:"fazer", past:"did"},
+{en:"Say", pt:"dizer", past:"said"},
+{en:"Go", pt:"ir", past:"went"},
+{en:"Get", pt:"pegar / conseguir", past:"got"},
+{en:"Make", pt:"fazer / criar", past:"made"},
+{en:"Know", pt:"saber / conhecer", past:"knew"},
+{en:"Think", pt:"pensar", past:"thought"},
+{en:"Take", pt:"pegar / levar", past:"took"},
+{en:"See", pt:"ver", past:"saw"}
 
 ];
 
 let currentWord=null;
 
-/* PAGE SWITCH */
-
-function goPage2(){
-
-document.getElementById("page1").classList.add("hidden");
-document.getElementById("page2").classList.remove("hidden");
-
-}
-
-function goPage1(){
-
-document.getElementById("page2").classList.add("hidden");
-document.getElementById("page1").classList.remove("hidden");
-
-}
-
-/* PAGE 1 */
-
 function randomWord(){
 
 let index=Math.floor(Math.random()*words.length);
-
 currentWord=words[index];
 
-document.getElementById("word1").innerText=currentWord.en;
+document.getElementById("word").innerText=currentWord.en;
 
-document.getElementById("answer1").value="";
-document.getElementById("result1").innerText="";
-document.getElementById("translation1").innerText="";
+document.getElementById("translation").innerText="";
+document.getElementById("past").innerText="";
+document.getElementById("result").innerText="";
+document.getElementById("answer").value="";
 
 }
 
-function checkPast(){
+function showTranslation(){
 
-let answer=document.getElementById("answer1").value.toLowerCase();
-
-if(answer===currentWord.past){
-
-document.getElementById("result1").innerText="✅ Correct";
-
-}else{
-
-document.getElementById("result1").innerText="❌ Correct: "+currentWord.past;
-
+if(currentWord){
+document.getElementById("translation").innerText="Translation: "+currentWord.pt;
 }
 
 }
 
 function showPast(){
 
-document.getElementById("result1").innerText="Past: "+currentWord.past;
+if(currentWord){
+document.getElementById("past").innerText="Past: "+currentWord.past;
+}
 
 }
 
-function showTranslation(){
+function checkAnswer(){
 
-document.getElementById("translation1").innerText="Translation: "+currentWord.pt;
+if(!currentWord) return;
 
-}
+let userAnswer=document.getElementById("answer").value.trim().toLowerCase();
+let correct=currentWord.past.toLowerCase();
 
-/* PAGE 2 */
+if(userAnswer===correct){
 
-function randomWordPT(){
-
-let index=Math.floor(Math.random()*words.length);
-
-currentWord=words[index];
-
-document.getElementById("word2").innerText=currentWord.pt;
-
-document.getElementById("presentAnswer").value="";
-document.getElementById("pastAnswer").value="";
-document.getElementById("result2").innerText="";
-
-}
-
-function checkBoth(){
-
-let present=document.getElementById("presentAnswer").value.toLowerCase();
-let past=document.getElementById("pastAnswer").value.toLowerCase();
-
-if(present===currentWord.en && past===currentWord.past){
-
-document.getElementById("result2").innerText="✅ Perfect!";
+document.getElementById("result").innerHTML="✅ Correct!";
+document.getElementById("result").style.color="#22c55e";
 
 }else{
 
-document.getElementById("result2").innerText="❌ Correct: "+currentWord.en+" / "+currentWord.past;
+document.getElementById("result").innerHTML="❌ Wrong! Correct: "+currentWord.past;
+document.getElementById("result").style.color="#ef4444";
 
 }
-
-}
-
-function showAnswers(){
-
-document.getElementById("result2").innerText="Answer: "+currentWord.en+" / "+currentWord.past;
 
 }
 
@@ -291,5 +236,4 @@ document.getElementById("result2").innerText="Answer: "+currentWord.en+" / "+cur
 
 </body>
 </html>
-
 
