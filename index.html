@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>English Trainer</title>
 
 <style>
@@ -93,6 +94,20 @@ font-weight:600;
 display:none;
 }
 
+/* MOBILE */
+
+@media (max-width:480px){
+
+.container{
+padding:28px;
+}
+
+.word{
+font-size:32px;
+}
+
+}
+
 </style>
 </head>
 
@@ -115,11 +130,13 @@ display:none;
 <button onclick="randomWord()">🎲 Random Word</button>
 <button onclick="checkPast()">✅ Check</button>
 <button onclick="showPast()">⏳ Show Past</button>
+<button onclick="showTranslation()">📖 Show Translation</button>
 <button onclick="goPage2()">➡ Portuguese Mode</button>
 
 </div>
 
 <div id="result1" class="result"></div>
+<div id="translation1" class="result"></div>
 
 </div>
 
@@ -130,7 +147,7 @@ display:none;
 
 <h1>Portuguese → English</h1>
 
-<div id="word2" class="word">Clique Random Word</div>
+<div id="word2" class="word">Click Random Word</div>
 
 <input id="presentAnswer" placeholder="Present (English)">
 <input id="pastAnswer" placeholder="Past (English)">
@@ -160,11 +177,11 @@ const words = [
 {en:"do", pt:"fazer", past:"did"},
 {en:"say", pt:"dizer", past:"said"},
 {en:"go", pt:"ir", past:"went"},
-{en:"get", pt:"pegar", past:"got"},
-{en:"make", pt:"criar", past:"made"},
-{en:"know", pt:"saber", past:"knew"},
+{en:"get", pt:"pegar / conseguir", past:"got"},
+{en:"make", pt:"fazer / criar", past:"made"},
+{en:"know", pt:"saber / conhecer", past:"knew"},
 {en:"think", pt:"pensar", past:"thought"},
-{en:"take", pt:"levar", past:"took"},
+{en:"take", pt:"pegar / levar", past:"took"},
 {en:"see", pt:"ver", past:"saw"}
 
 ];
@@ -187,7 +204,6 @@ document.getElementById("page1").classList.remove("hidden");
 
 }
 
-
 /* PAGE 1 */
 
 function randomWord(){
@@ -198,8 +214,9 @@ currentWord=words[index];
 
 document.getElementById("word1").innerText=currentWord.en;
 
-document.getElementById("result1").innerText="";
 document.getElementById("answer1").value="";
+document.getElementById("result1").innerText="";
+document.getElementById("translation1").innerText="";
 
 }
 
@@ -225,6 +242,11 @@ document.getElementById("result1").innerText="Past: "+currentWord.past;
 
 }
 
+function showTranslation(){
+
+document.getElementById("translation1").innerText="Translation: "+currentWord.pt;
+
+}
 
 /* PAGE 2 */
 
