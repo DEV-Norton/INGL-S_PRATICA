@@ -47,53 +47,7 @@ color:#e2e8f0;
 font-size:42px;
 font-weight:700;
 margin:25px 0;
-color:#f8fafc;
 }
-
-#translation{
-margin-top:12px;
-font-size:20px;
-color:#22c55e;
-}
-
-#past{
-margin-top:10px;
-font-size:20px;
-color:#38bdf8;
-}
-
-.buttons{
-margin-top:20px;
-display:flex;
-flex-direction:column;
-gap:12px;
-}
-
-button{
-padding:14px;
-border:none;
-border-radius:10px;
-font-size:16px;
-font-weight:600;
-cursor:pointer;
-transition:0.25s;
-background:#1e293b;
-color:#e2e8f0;
-border:1px solid rgba(255,255,255,0.08);
-}
-
-button:hover{
-background:#334155;
-transform:translateY(-2px);
-box-shadow:0 5px 20px rgba(0,0,0,0.4);
-}
-
-.random:hover{box-shadow:0 0 15px #8b5cf6;}
-.translation:hover{box-shadow:0 0 15px #22c55e;}
-.past:hover{box-shadow:0 0 15px #38bdf8;}
-.check:hover{box-shadow:0 0 15px #f59e0b;}
-
-/* INPUT */
 
 input{
 margin-top:20px;
@@ -109,26 +63,28 @@ color:white;
 border:1px solid rgba(255,255,255,0.1);
 }
 
-#result{
-margin-top:15px;
-font-size:18px;
-font-weight:600;
+.hidden{display:none;}
+
+.buttons{
+margin-top:20px;
+display:flex;
+flex-direction:column;
+gap:12px;
 }
-
-/* MOBILE */
-
-@media (max-width:480px){
-
-.container{padding:28px;}
-
-#word{font-size:34px;}
 
 button{
-font-size:15px;
-padding:13px;
+padding:14px;
+border:none;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+background:#1e293b;
+color:#e2e8f0;
 }
 
-}
+#translation{margin-top:10px;color:#22c55e;}
+#past{margin-top:10px;color:#38bdf8;}
+#result{margin-top:15px;font-weight:bold;}
 
 </style>
 </head>
@@ -141,17 +97,17 @@ padding:13px;
 
 <div id="word">Click Random Word</div>
 
-<input id="answer" placeholder="Type the past tense...">
+<input id="answer" class="hidden" placeholder="Type the past tense...">
 
 <div class="buttons">
 
-<button class="random" onclick="randomWord()">🎲 Random Word</button>
+<button onclick="randomWord()">🎲 Random Word</button>
 
-<button class="check" onclick="checkAnswer()">✅ Check Answer</button>
+<button id="btnCheck" class="hidden" onclick="checkAnswer()">✅ Check Answer</button>
 
-<button class="translation" onclick="showTranslation()">📖 Show Translation</button>
+<button onclick="showTranslation()">📖 Show Translation</button>
 
-<button class="past" onclick="showPast()">⏳ Show Past</button>
+<button id="btnPast" class="hidden" onclick="showPast()">⏳ Show Past</button>
 
 </div>
 
@@ -165,36 +121,49 @@ padding:13px;
 
 const words = [
 
-{en:"Be", pt:"ser / estar", past:"was / were"},
-{en:"Have", pt:"ter", past:"had"},
-{en:"Do", pt:"fazer", past:"did"},
-{en:"Say", pt:"dizer", past:"said"},
-{en:"Go", pt:"ir", past:"went"},
-{en:"Get", pt:"pegar / conseguir", past:"got"},
-{en:"Make", pt:"fazer / criar", past:"made"},
-{en:"Know", pt:"saber / conhecer", past:"knew"},
-{en:"Think", pt:"pensar", past:"thought"},
-{en:"Take", pt:"pegar / levar", past:"took"},
-{en:"See", pt:"ver", past:"saw"},
-{en:"drink", pt:"beber", past:"drank"},
-{en:"buy", pt:"comprar", past:"bought"},
-{en:"pretend", pt:"fingir", past:"pretended"},
-{en:"intend", pt:"pretender", past:"intended"},
-{en:"cook", pt:"cozinhar", past:"cooked"},
-{en:"sell", pt:"vender", past:"sold"},
-{en:"get used to", pt:"acostumar-se", past:"got used to"},
-{en:"leave", pt:"sair", past:"left"},
-{en:"give", pt:"dar", past:"gave"},
-{en:"feel", pt:"sentir", past:"felt"},
-{en:"help", pt:"ajudar", past:"helped"},
-{en:"find", pt:"achar / encontrar", past:"found"},
-{en:"run", pt:"correr", past:"ran"},
-{en:"eat", pt:"comer", past:"ate"},
-{en:"speak", pt:"falar", past:"spoke"},
-{en:"Come", pt:"vir", past:"came"},
-{en:"Bring", pt:"trazer", past:"brought"},
-{en:"Begin", pt:"começar", past:"began"},
-{en:"Write", pt:"escrever", past:"wrote"}
+/* VERBOS */
+{en:"Be", pt:"ser / estar", past:"was / were", type:"verb"},
+{en:"Have", pt:"ter", past:"had", type:"verb"},
+{en:"Do", pt:"fazer", past:"did", type:"verb"},
+{en:"Say", pt:"dizer", past:"said", type:"verb"},
+{en:"Go", pt:"ir", past:"went", type:"verb"},
+{en:"Get", pt:"pegar / conseguir", past:"got", type:"verb"},
+{en:"Make", pt:"fazer / criar", past:"made", type:"verb"},
+{en:"Know", pt:"saber / conhecer", past:"knew", type:"verb"},
+{en:"Think", pt:"pensar", past:"thought", type:"verb"},
+{en:"Take", pt:"pegar / levar", past:"took", type:"verb"},
+{en:"See", pt:"ver", past:"saw", type:"verb"},
+{en:"Drink", pt:"beber", past:"drank", type:"verb"},
+{en:"Buy", pt:"comprar", past:"bought", type:"verb"},
+{en:"Pretend", pt:"fingir", past:"pretended", type:"verb"},
+{en:"Intend", pt:"pretender", past:"intended", type:"verb"},
+{en:"Cook", pt:"cozinhar", past:"cooked", type:"verb"},
+{en:"Sell", pt:"vender", past:"sold", type:"verb"},
+{en:"Get used to", pt:"acostumar-se", past:"got used to", type:"verb"},
+{en:"Leave", pt:"sair", past:"left", type:"verb"},
+{en:"Give", pt:"dar", past:"gave", type:"verb"},
+{en:"Feel", pt:"sentir", past:"felt", type:"verb"},
+{en:"Help", pt:"ajudar", past:"helped", type:"verb"},
+{en:"Find", pt:"achar / encontrar", past:"found", type:"verb"},
+{en:"Run", pt:"correr", past:"ran", type:"verb"},
+{en:"Eat", pt:"comer", past:"ate", type:"verb"},
+{en:"Speak", pt:"falar", past:"spoke", type:"verb"},
+{en:"Come", pt:"vir", past:"came", type:"verb"},
+{en:"Bring", pt:"trazer", past:"brought", type:"verb"},
+{en:"Begin", pt:"começar", past:"began", type:"verb"},
+{en:"Write", pt:"escrever", past:"wrote", type:"verb"},
+
+/* ADJETIVOS */
+{en:"Afraid / Scared", pt:"com medo", type:"adjective"},
+{en:"Sad", pt:"triste", type:"adjective"},
+{en:"Nervous", pt:"nervoso", type:"adjective"},
+{en:"Anxious", pt:"ansioso", type:"adjective"},
+{en:"Excited", pt:"animado / empolgado", type:"adjective"},
+{en:"Grateful", pt:"grato", type:"adjective"},
+
+/* SUBSTANTIVO */
+{en:"Car", pt:"carro", type:"noun"}
+
 ];
 
 let currentWord=null;
@@ -205,47 +174,52 @@ let index=Math.floor(Math.random()*words.length);
 currentWord=words[index];
 
 document.getElementById("word").innerText=currentWord.en;
-
 document.getElementById("translation").innerText="";
 document.getElementById("past").innerText="";
 document.getElementById("result").innerText="";
 document.getElementById("answer").value="";
 
+let input = document.getElementById("answer");
+let btnCheck = document.getElementById("btnCheck");
+let btnPast = document.getElementById("btnPast");
+
+if(currentWord.type === "verb"){
+input.classList.remove("hidden");
+btnCheck.classList.remove("hidden");
+btnPast.classList.remove("hidden");
+}else{
+input.classList.add("hidden");
+btnCheck.classList.add("hidden");
+btnPast.classList.add("hidden");
+}
+
 }
 
 function showTranslation(){
-
 if(currentWord){
 document.getElementById("translation").innerText="Translation: "+currentWord.pt;
 }
-
 }
 
 function showPast(){
-
-if(currentWord){
+if(currentWord && currentWord.type==="verb"){
 document.getElementById("past").innerText="Past: "+currentWord.past;
 }
-
 }
 
 function checkAnswer(){
 
-if(!currentWord) return;
+if(!currentWord || currentWord.type!=="verb") return;
 
 let userAnswer=document.getElementById("answer").value.trim().toLowerCase();
 let correct=currentWord.past.toLowerCase();
 
 if(userAnswer===correct){
-
-document.getElementById("result").innerHTML="✅ Correct!";
+document.getElementById("result").innerText="✅ Correct!";
 document.getElementById("result").style.color="#22c55e";
-
 }else{
-
-document.getElementById("result").innerHTML="❌ Wrong! Correct: "+currentWord.past;
+document.getElementById("result").innerText="❌ Wrong! Correct: "+currentWord.past;
 document.getElementById("result").style.color="#ef4444";
-
 }
 
 }
@@ -254,4 +228,3 @@ document.getElementById("result").style.color="#ef4444";
 
 </body>
 </html>
-
